@@ -5,7 +5,7 @@ from dotenv import dotenv_values
 
 # Load environment variables
 config = dotenv_values('.env')
-access_token = config['ACCESS_TOKEN']
+access_token = config['LI_ACCESS_TOKEN']
 
 # Load prompts from file
 with open('prompts.txt', 'r') as file:
@@ -15,7 +15,7 @@ with open('prompts.txt', 'r') as file:
 prompt = random.choice(prompts).strip()
 
 # Prompt ChatGPT for post content
-openai.api_key = 'YOUR_OPENAI_API_KEY'  # Replace with your OpenAI API key
+openai.api_key = config['AI_ACCESS_TOKEN']
 
 response = openai.Completion.create(
     engine='text-davinci-003',
