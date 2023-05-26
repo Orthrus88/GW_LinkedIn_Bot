@@ -1,5 +1,6 @@
 import requests
 import random
+import openai
 from dotenv import dotenv_values
 
 # Load environment variables
@@ -13,16 +14,21 @@ with open('prompts.txt', 'r') as file:
 # Select a random prompt
 prompt = random.choice(prompts).strip()
 
-# Generate post content
-content = f"🚀 [GeekWerkes] {prompt}"
-if 'technology' in prompt.lower():
-    content += ' #technology'
-if 'devsecops' in prompt.lower():
-    content += ' #devsecops'
-if 'artificial intelligence' in prompt.lower():
-    content += ' #artificialintelligence'
-else:
-    content += ' #SocialNetworking'
+# Prompt ChatGPT for post content
+openai.api_key = 'YOUR_OPENAI_API_KEY'  # Replace with your OpenAI API key
+
+response = openai.Completion.create(
+    engine='text-davinci-003',
+    prompt=prompt,
+    max_tokens=100,
+    temperature=0.7,
+    n=1,
+    stop=None,
+)
+
+if 'choices' in response and len(response.choices) > 0:
+    content = response.choices[0].text.strip()
+
 
 headers = {
     'Content-Type': 'application/json',
